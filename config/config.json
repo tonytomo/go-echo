@@ -1,7 +1,7 @@
 {
-    "DB_USERNAME": "postgres",
-    "DB_PASSWORD": "postgres",
+    "DB_USERNAME": "root",
+    "DB_PASSWORD": "",
     "DB_HOST": "127.0.0.1",
-    "DB_PORT": "5432",
-    "DB_NAME": "go-echo"
+    "DB_PORT": "3306",
+    "DB_NAME": "pbb"
 }

@@ -1,7 +1,8 @@
 package models
 
 type Response struct {
-	Status  int         `json:"status"`
-	Message string      `json:"message"`
-	Data    interface{} `json:"data"`
+	Status           bool        `json:"Status"`
+	ErrorCode        string      `json:"ErrorCode"`
+	ErrorDescription string      `json:"ErrorDescription"`
+	Data             interface{} `json:"Data"`
 }
