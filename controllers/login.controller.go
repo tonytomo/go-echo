@@ -1,6 +1,7 @@
 package controllers
 
 import (
+	"fmt"
 	"go-echo/helpers"
 	"go-echo/models"
 	"net/http"
@@ -19,12 +20,16 @@ type jwtCustomClaims struct {
 func CheckLogin(c echo.Context) error {
 	username := c.FormValue("username")
 	password := c.FormValue("password")
+	var response models.Response
 
 	res, err := models.CheckLogin(username, password)
 	if err != nil {
-		return c.JSON(http.StatusInternalServerError, map[string]string{
-			"message": err.Error(),
-		})
+		response.Status = false
+		response.ErrorCode = fmt.Sprint(http.StatusInternalServerError)
+		response.ErrorDescription = err.Error()
+		response.Data = nil
+
+		return c.JSON(http.StatusInternalServerError, response)
 	}
 
 	if !res {
@@ -43,14 +48,24 @@ func CheckLogin(c echo.Context) error {
 
 	t, err := token.SignedString([]byte("secret"))
 	if err != nil {
-		return c.JSON(http.StatusInternalServerError, map[string]string{
-			"message": err.Error(),
-		})
+		response.Status = false
+		response.ErrorCode = fmt.Sprint(http.StatusInternalServerError)
+		response.ErrorDescription = err.Error()
+		response.Data = nil
+
+		return c.JSON(http.StatusInternalServerError, response)
 	}
 
-	return c.JSON(http.StatusOK, echo.Map{
-		"token": t,
-	})
+	response.Status = true
+	response.ErrorCode = "-"
+	response.ErrorDescription = "-"
+	response.Data = echo.Map{
+		"username": username,
+		"password": "",
+		"token":    t,
+	}
+
+	return c.JSON(http.StatusOK, response)
 }
 
 func GenerateHashPassword(c echo.Context) error {

@@ -43,6 +43,11 @@ func FetchDataPbb() (Response, error) {
 	rows1, err := con.Query(sqlStatement1)
 
 	if err != nil {
+		res.Status = false
+		res.ErrorCode = "-N"
+		res.ErrorDescription = err.Error()
+		res.Data = nil
+
 		return res, err
 	}
 	defer rows1.Close()
@@ -50,6 +55,11 @@ func FetchDataPbb() (Response, error) {
 	for rows1.Next() {
 		err = rows1.Scan(&objT.Id, &objW.NoPpdb, &objW.Nama, &objW.Alamat, &objW.Kabupaten, &objW.Kecamatan, &objW.Desa, &objW.Rt, &objW.Rw)
 		if err != nil {
+			res.Status = false
+			res.ErrorCode = "-N"
+			res.ErrorDescription = err.Error()
+			res.Data = nil
+
 			return res, err
 		}
 
@@ -58,6 +68,11 @@ func FetchDataPbb() (Response, error) {
 		rows2, err := con.Query(sqlStatement2, objT.Id)
 
 		if err != nil {
+			res.Status = false
+			res.ErrorCode = "-N"
+			res.ErrorDescription = err.Error()
+			res.Data = nil
+
 			return res, err
 		}
 		defer rows2.Close()
@@ -65,6 +80,11 @@ func FetchDataPbb() (Response, error) {
 		for rows2.Next() {
 			err = rows2.Scan(&objT.Id_data, &objT.NoPpdb, &objP.Tahun, &objP.Pajak, &objP.Denda)
 			if err != nil {
+				res.Status = false
+				res.ErrorCode = "-N"
+				res.ErrorDescription = err.Error()
+				res.Data = nil
+
 				return res, err
 			}
 
